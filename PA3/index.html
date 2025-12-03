@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>StudyPilot – All In One Dashboard</title>
+
+    <link rel="stylesheet" href="styles/style.css">
+
+    <style>
+        #topbar {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 1000;
+        }
+
+        #welcomeUser {
+            color: #d6e6ff;
+            font-size: 15px;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+
+        #logoutBtn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 6px;
+            color: #d6e6ff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+    </style>
+</head>
+
+<body>
+
+    <script>
+        if (!localStorage.getItem("currentUser")) {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <div id="topbar">
+        <span id="welcomeUser"></span>
+        <button id="logoutBtn">Logout</button>
+    </div>
+
+    <script>
+        const user = localStorage.getItem("currentUser");
+        document.getElementById("welcomeUser").textContent = "Welcome, " + user;
+
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+            localStorage.removeItem("currentUser");
+            window.location.href = "login.html";
+        });
+    </script>
+
+
+    <canvas id="starfield"></canvas>
+
+    <section id="dashboard" class="single-page"></section>
+
+    <script src="modules/TaskManager.js"></script>
+    <script src="modules/Prioritizer.js"></script>
+    <script src="modules/Pomodoro.js"></script>
+    <script src="modules/Analytics.js"></script>
+
+    <script src="services/SpotifyService.js"></script>
+    <script src="services/WeatherService.js"></script>
+
+    <script src="components/TaskCard.js"></script>
+    <script src="components/TimerUI.js"></script>
+    <script src="components/DashboardUI.js"></script>
+
+    <script>
+        DashboardUI.renderUnified();
+    </script>
+
+    <script src="effects/starfield.js"></script>
+
+    <div id="taskModal" class="modal-bg">
+        <div class="modal-window glass-card">
+            <h2>Add Task</h2>
+
+            <input id="modalTaskTitle" class="modal-input" placeholder="Task title">
+
+            <input id="modalTaskDeadline" type="date" class="modal-input">
+
+            <select id="modalTaskType" class="modal-input">
+                <option value="Course">Course</option>
+                <option value="Assignment">Assignment</option>
+                <option value="Exam">Exam</option>
+            </select>
+
+            <div class="modal-buttons">
+                <button onclick="TaskCard.closeModal()">Cancel</button>
+                <button onclick="TaskCard.submitTask()">Add</button>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
